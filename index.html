@@ -79,11 +79,17 @@
     </div>
 
     <div id="payment-area" class="pay-box">
-        <span class="warning-red">⚠️ LƯU Ý: Chụp bill sau khi chuyển khoản, rồi nhấn "Đã Thanh Toán".</span>
-        <img src="https://i.ibb.co/S47mG0yv/qrzalo.jpg" class="qr-img">
-        <button class="btn-confirm" onclick="showReceipt()">✅ ĐÃ THANH TOÁN</button>
-    </div>
-
+    <span class="warning-red">⚠️ LƯU Ý: Chụp bill sau khi chuyển khoản, rồi nhấn "Đã Thanh Toán".</span>
+    <p style="font-weight: bold; color: #000;">QUÉT MÃ QUA APP NGÂN HÀNG / ZALOPAY</p>
+    
+    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://qr.zalopay.vn/v1/user/0966181924" 
+         class="qr-img" 
+         style="border: 5px solid #0068ff; padding: 5px;" 
+         alt="Mã QR Thanh Toán">
+    
+    <p style="font-size: 14px; color: #555;">(Số tài khoản ZaloPay: 0339462561)</p>
+    <button class="btn-confirm" onclick="showReceipt()">✅ ĐÃ THANH TOÁN</button>
+</div>
     <div id="receipt-section">
         <pre id="receipt-text">📄 XÁC NHẬN ĐĂNG KÝ THÀNH VIÊN
 🆔 MÃ: #TienDocu_689 | 📅 NGÀY: <span id="current-date"></span>
