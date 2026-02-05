@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHO TƯ LIỆU PHIM - NGUYỄN NHẬT TIẾN</title>
+    <style>
+        :root {
+            --primary: #38bdf8;
+            --bg: #0f172a;
+            --card: #1e293b;
+        }
+        body { font-family: sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 20px; line-height: 1.6; }
+        .container { max-width: 800px; margin: 0 auto; }
+        header { text-align: center; margin-bottom: 30px; }
+        
+        /* Video List (Locked) */
+        .video-item { background: var(--card); border-radius: 12px; margin-bottom: 20px; overflow: hidden; border: 1px solid #334155; }
+        .thumbnail-locked { position: relative; width: 100%; height: 200px; background: #000; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .thumbnail-locked img { width: 100%; height: 100%; object-fit: cover; filter: blur(8px); opacity: 0.5; }
+        .lock-overlay { position: absolute; text-align: center; }
+        .lock-icon { font-size: 40px; }
+        .video-info { padding: 15px; }
+        .video-info h3 { margin: 0 0 10px; color: var(--primary); }
+
+        /* Payment Section */
+        .pay-box { background: #fff; color: #000; padding: 20px; border-radius: 15px; text-align: center; margin: 30px 0; }
+        .warning-red { color: #ff0000; font-weight: bold; font-size: 1.1em; margin-bottom: 15px; display: block; }
+        .qr-img { width: 250px; border: 2px solid #eee; border-radius: 10px; }
+        .btn { display: inline-block; background: #2563eb; color: #fff; padding: 12px 25px; border-radius: 8px; text-decoration: none; font-weight: bold; border: none; cursor: pointer; margin-top: 15px; font-size: 16px; }
+        
+        /* Receipt Section (Hidden by default) */
+        #receipt-section { display: none; background: #f8fafc; color: #1e293b; padding: 20px; border-radius: 10px; border-left: 5px solid #2563eb; margin-top: 20px; }
+        .copy-hint { color: #64748b; font-size: 0.9em; font-style: italic; margin-bottom: 10px; display: block; }
+        pre { white-space: pre-wrap; word-wrap: break-word; font-family: inherit; font-size: 14px; }
+        
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>KHO PHIM TƯ LIỆU THẾ GIỚI </h1>
+        <p>Hệ thống cung cấp video độc quyền về các góc khuất xã hội</p>
+    </header>
+
+    <div id="locked-content">
+        <div class="video-item">
+            <div class="thumbnail-locked">
+                <img src="https://img.youtube.com/vi/7MkAs99O1LQ/maxresdefault.jpg" alt="Las Vegas">
+                <div class="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <p>Nội dung đang khóa</p>
+                </div>
+            </div>
+            <div class="video-info">
+                <h3>Địa ngục dưới lòng đất Las Vegas</h3>
+                <p>Khám phá cuộc sống của 1.500 người dưới hệ thống cống ngầm 200 dặm...</p>
+            </div>
+        </div>
+
+        <div class="video-item">
+            <div class="thumbnail-locked">
+                <img src="https://img.youtube.com/vi/cwczifilQJY/maxresdefault.jpg" alt="Hong Kong">
+                <div class="lock-overlay">
+                    <div class="lock-icon">🔒</div>
+                    <p>Nội dung đang khóa</p>
+                </div>
+            </div>
+            <div class="video-info">
+                <h3>Nhà quan tài ở Hồng Kông</h3>
+                <p>Cận cảnh không gian sống siêu nhỏ mô phỏng quan tài tại Hong Kong...</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="pay-box">
+        <span class="warning-red">⚠️ LƯU Ý: Chụp bill khi chuyển khoản thành công, sau đó nhấn nút "Đã Thanh Toán" bên dưới.</span>
+        <p><strong>ĐĂNG KÝ TRUY CẬP TRỌN ĐỜI: 10.000đ</strong></p>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://qr.zalopay.vn/v1/user/SỐ_ZALO_CỦA_BẠN" class="qr-img" alt="QR Thanh Toan">
+        <br>
+        <button class="btn" onclick="showReceipt()">✅ ĐÃ THANH TOÁN</button>
+    </div>
+
+    <div id="receipt-section">
+        <span class="copy-hint">👉 Vui lòng sao chép toàn bộ thông tin bên dưới và nhấn gửi qua Zalo:</span>
+        <pre id="receipt-text">
+📄 XÁC NHẬN ĐĂNG KÝ THÀNH VIÊN
+HỆ THỐNG TƯ LIỆU GÓC KHUẤT THẾ GIỚI
+──────────────────────────
+🆔 MÃ GIAO DỊCH: #TienDocu_689
+📅 NGÀY KÍCH HOẠT: <span id="current-date"></span>
+
+👤 THÔNG TIN ĐĂNG KÝ:
+• Khách hàng: (Hệ thống sẽ cập nhật tên khi gửi)
+• Gói dịch vụ: Premium Access (Vĩnh viễn)
+• Nội dung: Xem đầy đủ phóng sự và video độc quyền.
+• Trạng thái: ĐÃ THANH TOÁN
+💰 CHI PHÍ: 10.000đ
+
+✨ QUYỀN LỢI:
+1. Truy cập vĩnh viễn kho video.
+2. Cập nhật video mới hàng tuần.
+3. Hỗ trợ kỹ thuật 24/7.
+
+🔗 LINK TRUY CẬP ĐỘC QUYỀN:
+👉 https://tulieuthegioi.vercel.app
+──────────────────────────
+[Hệ thống xác nhận đơn tử từ Tiến ]</pre>
+        
+        <a id="zalo-link" href="https://zalo.me/0966181924" target="_blank" class="btn" style="background: #0068ff; width: 80%;">GỬI HÓA ĐƠN QUA ZALO ĐỂ NHẬN MẬT KHẨU</a>
+    </div>
+</div>
+
+<script>
+    // Tự động lấy ngày hôm nay
+    document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
+
+    function showReceipt() {
+        // Hiện phần hóa đơn
+        document.getElementById('receipt-section').style.display = 'block';
+        // Cuộn xuống hóa đơn
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+        alert("Cảm ơn bạn! Vui lòng copy thông tin hóa đơn bên dưới và gửi qua Zalo để nhận mật khẩu xem phim.");
+    }
+</script>
+
+</body>
+</html>
