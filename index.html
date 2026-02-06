@@ -170,6 +170,17 @@ Trạng thái: ĐÃ THANH TOÁN (10.000đ)
         });
     }
 </script>
+<div style="text-align: center; margin-top: 50px; opacity: 0.3;">
+    <button onclick="resetWeb()" style="background: none; border: 1px solid #555; color: #555; padding: 5px 10px; cursor: pointer; font-size: 12px;">
+        Khóa lại web (Để quay video)
+    </button>
+</div>
 
+<script>
+    function resetWeb() {
+        localStorage.removeItem("unlocked_tien"); // Xóa bộ nhớ đã mở khóa
+        location.reload(); // Load lại trang
+    }
+</script>
 </body>
 </html>
