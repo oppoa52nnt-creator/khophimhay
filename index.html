@@ -87,28 +87,29 @@
         <div class="video-info"><h3>Nhà quan tài ở Hồng Kông</h3></div>
     </div>
 
-    <div id="payment-area" class="pay-box">
-        <span class="warning-red">LƯU Ý: Chụp bill khi chuyển khoản thành công, sau đó nhấn nút Đã Thanh Toán bên dưới.</span>
-        
-        <div style="text-align: center; background: #fff; padding: 20px; border-radius: 15px; border: 3px solid #38bdf8; margin: 20px 0;">
-    <p style="color: #000; font-weight: bold; margin-bottom: 10px; font-size: 16px;">QUÉT MÃ ZALOPAY NHẬN MẬT KHẨU</p>
+  <div id="payment-area" style="background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin-top: 40px; border: 3px solid #38bdf8;">
+    <span style="color: #ff0000; font-weight: bold; margin-bottom: 15px; display: block; font-size: 16px; text-decoration: underline;">
+        ⚠️ LƯU Ý: Chụp bill sau khi chuyển khoản, rồi nhấn "Đã Thanh Toán".
+    </span>
     
-    <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=https://qr.zalopay.vn/v1/user/0966181924" 
-         alt="Mã QR ZaloPay 0966181924" 
-         style="width: 100%; max-width: 250px; border: 5px solid #0068ff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+    <p style="font-weight: bold; margin-bottom: 10px;">QUÉT MÃ QUA APP NGÂN HÀNG / ZALOPAY</p>
+
+    <img src="qrzalo.jpg" 
+         class="qr-img" 
+         style="width: 100%; max-width: 280px; border-radius: 10px; border: 1px solid #ddd;" 
+         alt="Mã QR ZaloPay của Tiến">
+
+    <p style="margin: 10px 0; font-weight: bold;">Số tiền: 10.000 VNĐ</p>
+    <p style="font-size: 14px; color: #555;">(ZaloPay: 0966181924)</p>
     
-    <p style="color: #333; font-size: 15px; margin-top: 12px;">Số điện thoại: <b style="color: #0068ff;">0966181924</b></p>
-    <p style="color: #ff0000; font-size: 13px; font-weight: bold;">(Nội dung: gói thành viên vip)</p>
+    <button class="btn-confirm" onclick="showReceipt()" style="background: #2563eb; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; width: 100%; font-size: 18px; margin-top: 10px;">
+        ✅ ĐÃ THANH TOÁN
+    </button>
 </div>
 
-        
-        <p style="font-weight: bold; margin: 5px 0;">Số tiền: 10.000 VNĐ</p>
-        <button class="btn-confirm" onclick="showReceipt()">✅ ĐÃ THANH TOÁN</button>
-    </div>
+<div id="receipt-section" style="display: none; background: #f1f5f9; color: #000; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #2563eb;">
+    <pre id="receipt-text" style="white-space: pre-wrap; background: #fff; padding: 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">
 
-    <div id="receipt-section">
-        <p style="color: #d32f2f; font-weight: bold; font-size: 14px;">Vui lòng nhấn COPY hóa đơn và gửi qua Zalo cho Tiến:</p>
-        <pre id="receipt-text">
 📄 XÁC NHẬN ĐĂNG KÝ THÀNH VIÊN
 HỆ THỐNG TƯ LIỆU GÓC KHUẤT THẾ GIỚI
 🆔 MÃ GIAO DỊCH: #hoivienkhophimhay
