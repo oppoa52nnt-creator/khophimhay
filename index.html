@@ -3,183 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KHO PHIM TƯ LIỆU - NGUYỄN NHẬT TIẾN</title>
+    <title>HỆ THỐNG CUNG CẤP PHIM - NHẠC - NHẬT TIẾN</title>
     <style>
         :root { --primary: #38bdf8; --bg: #0f172a; --card: #1e293b; --gold: #fbbf24; }
         body { font-family: 'Segoe UI', sans-serif; background: var(--bg); color: #fff; margin: 0; padding: 15px; }
         .container { max-width: 600px; margin: 0 auto; }
         
+        /* Menu phân loại */
+        .category-menu { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; position: sticky; top: 10px; z-index: 100; }
+        .tab-btn { background: #334155; border: 2px solid #475569; color: #fff; padding: 10px 15px; border-radius: 10px; cursor: pointer; font-weight: bold; flex: 1; transition: 0.3s; }
+        .tab-btn.active { background: var(--primary); color: #000; border-color: #fff; }
+
         /* Video Item */
-        .video-item { background: var(--card); border-radius: 12px; margin-bottom: 25px; overflow: hidden; border: 1px solid #334155; position: relative; }
+        .video-item { background: var(--card); border-radius: 15px; margin-bottom: 25px; overflow: hidden; border: 1px solid #334155; display: none; }
+        .video-item.show { display: block; } /* Chỉ hiện video thuộc danh mục đang chọn */
+
         .thumbnail-box { position: relative; width: 100%; height: 220px; background: #000; }
         .thumbnail-box img { width: 100%; height: 100%; object-fit: cover; }
         
-        /* Lớp phủ mờ */
-        .blur-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; padding: 20px; text-align: center; }
+        .blur-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; padding: 20px; text-align: center; }
         .unlocked .blur-overlay { display: none; }
         
-        .btn-buy-now { background: var(--gold); color: #000; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: 800; margin-bottom: 15px; border: 2px solid #fff; cursor: pointer; font-size: 15px; }
-        
-        /* Ô nhập mật khẩu */
-        .pass-group { display: flex; gap: 5px; justify-content: center; width: 100%; }
-        .pass-input { background: #fff; border: none; padding: 10px; border-radius: 5px; width: 140px; text-align: center; font-weight: bold; color: #000; font-size: 16px; }
+        .btn-buy-now { background: var(--gold); color: #000; padding: 10px 20px; border-radius: 50px; font-weight: 800; margin-bottom: 15px; border: 2px solid #fff; cursor: pointer; }
+        .pass-group { display: flex; gap: 5px; }
+        .pass-input { background: #fff; border: none; padding: 10px; border-radius: 5px; width: 130px; text-align: center; font-weight: bold; color: #000; }
         .btn-unlock { background: var(--primary); border: none; padding: 10px 15px; border-radius: 5px; color: #000; font-weight: bold; cursor: pointer; }
 
         .video-info { padding: 15px; }
-        .video-info h3 { margin: 0; font-size: 18px; color: var(--primary); }
+        .video-info h3 { margin: 0; font-size: 16px; color: var(--primary); }
         .video-wrapper { display: none; width: 100%; height: 220px; }
         .unlocked .video-wrapper { display: block; }
         .unlocked .thumbnail-box { display: none; }
 
-        /* Payment Section */
-        .pay-box { background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin-top: 40px; border: 3px solid var(--primary); }
-        .warning-red { color: #ff0000; font-weight: bold; margin-bottom: 15px; display: block; font-size: 16px; text-decoration: underline; }
-        
-        /* Ảnh QR của Tiến */
-        .qr-img { width: 100%; max-width: 280px; border-radius: 10px; margin: 10px 0; border: 1px solid #ddd; }
-        
-        .btn-confirm { background: #2563eb; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; width: 100%; font-size: 18px; margin-top: 10px; }
-        
-        #receipt-section { display: none; background: #f1f5f9; color: #000; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #2563eb; }
-        pre { white-space: pre-wrap; background: #fff; padding: 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 5px; text-align: left; }
+        /* QR Payment */
+        .pay-box { background: #fff; color: #000; padding: 20px; border-radius: 15px; text-align: center; margin-top: 30px; border: 3px solid var(--primary); }
+        .qr-img { width: 100%; max-width: 250px; border-radius: 10px; margin: 10px 0; }
+        .btn-confirm { background: #2563eb; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; border: none; width: 100%; margin-top: 10px; cursor: pointer; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <header style="text-align: center; margin-bottom: 20px;">
-        <h1 style="color: var(--primary); margin-bottom: 5px;">KHO PHIM TƯ LIỆU</h1>
-        <p style="font-size: 14px; opacity: 0.8;">Liên hệ admin đăng ký gói thành viên chỉ từ 10.0000đ để xem phim vĩnh viễn.</p>
+        <h1 style="color: var(--primary); font-size: 24px;">HỆ THỐNG TƯ LIỆU</h1>
+        <p style="font-size: 13px; opacity: 0.8;">Hội viên Nhật Tiến: 10.000đ/vĩnh viễn</p>
     </header>
 
-    <div class="video-item">
+    <div class="category-menu">
+        <button class="tab-btn active" onclick="filterCategory('phim')">🎬 PHIM TƯ LIỆU</button>
+        <button class="tab-btn" onclick="filterCategory('nhac')">🎶 NHẠC REMIX</button>
+    </div>
+
+    <div class="video-item phim show">
         <div class="thumbnail-box">
             <img src="https://img.youtube.com/vi/7MkAs99O1LQ/maxresdefault.jpg">
             <div class="blur-overlay">
-                <button class="btn-buy-now" onclick="scrollToPay()">ĐĂNG KÝ XEM PHIM - 10.000đ</button>
+                <button class="btn-buy-now" onclick="scrollToPay()">ĐĂNG KÝ XEM - 10.000đ</button>
                 <div class="pass-group">
-                    <input type="password" class="pass-input" placeholder="Nhập mã PIN...">
-                    <button class="btn-unlock" onclick="checkPass()">MỞ</button>
+                    <input type="password" class="pass-input" placeholder="Mã PIN...">
+                    <button class="btn-unlock" onclick="checkPass(this)">MỞ</button>
                 </div>
-                <p style="font-size: 11px; margin-top: 10px; color: #ccc;">(Mật khẩu được cấp sau khi thanh toán)</p>
             </div>
         </div>
-        <div class="video-wrapper">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/7MkAs99O1LQ" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="video-info"><h3>Địa ngục dưới lòng đất Las Vegas</h3></div>
+        <div class="video-wrapper"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/7MkAs99O1LQ" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-info"><h3>[PHIM] Địa ngục dưới lòng đất Las Vegas</h3></div>
     </div>
 
-    <div class="video-item">
+    <div class="video-item nhac">
         <div class="thumbnail-box">
-            <img src="https://img.youtube.com/vi/cwczifilQJY/maxresdefault.jpg">
+            <img src="https://img.youtube.com/vi/CmxL9D87vI4/maxresdefault.jpg">
             <div class="blur-overlay">
-                <button class="btn-buy-now" onclick="scrollToPay()">ĐĂNG KÝ XEM PHIM - 10.000đ</button>
+                <button class="btn-buy-now" onclick="scrollToPay()">ĐĂNG KÝ NGHE - 10.000đ</button>
                 <div class="pass-group">
-                    <input type="password" class="pass-input" placeholder="Nhập mã PIN...">
-                    <button class="btn-unlock" onclick="checkPass()">MỞ</button>
+                    <input type="password" class="pass-input" placeholder="Mã PIN...">
+                    <button class="btn-unlock" onclick="checkPass(this)">MỞ</button>
                 </div>
             </div>
         </div>
-        <div class="video-wrapper">
-            <iframe width="100%" height="100%" src="https://www.youtube.com/embed/cwczifilQJY" frameborder="0" allowfullscreen></iframe>
-        </div>
-        <div class="video-info"><h3>Nhà quan tài ở Hồng Kông</h3></div>
+        <div class="video-wrapper"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/CmxL9D87vI4" frameborder="0" allowfullscreen></iframe></div>
+        <div class="video-info"><h3>[REMIX] Nonstop Việt Mix 2024 Cực Mạnh</h3></div>
     </div>
 
-  <div id="payment-area" style="background: #fff; color: #000; padding: 25px; border-radius: 15px; text-align: center; margin-top: 40px; border: 3px solid #38bdf8;">
-    <span style="color: #ff0000; font-weight: bold; margin-bottom: 15px; display: block; font-size: 16px; text-decoration: underline;">
-        ⚠️ LƯU Ý: Chụp bill sau khi chuyển khoản, rồi nhấn "Đã Thanh Toán".
-    </span>
-    
-    <p style="font-weight: bold; margin-bottom: 10px;">QUÉT MÃ QUA APP NGÂN HÀNG / ZALOPAY</p>
+    <div id="payment-area" class="pay-box">
+        <p style="font-weight: bold; color: red;">BƯỚC 1: QUÉT MÃ CHUYỂN KHOẢN</p>
+        <img src="qrzalo.jpg" class="qr-img">
+        <p>Số tiền: <b>10.000 VNĐ</b></p>
+        <button class="btn-confirm" onclick="copyAndZalo()">BƯỚC 2: GỬI BILL QUA ZALO</button>
+    </div>
 
-    <img src="qrzalo.jpg" 
-         class="qr-img" 
-         style="width: 100%; max-width: 280px; border-radius: 10px; border: 1px solid #ddd;" 
-         alt="Mã QR ZaloPay của Tiến">
-
-    <p style="margin: 10px 0; font-weight: bold;">Số tiền: 10.000 VNĐ</p>
-    <p style="font-size: 14px; color: #555;"> Quét mã QR để tránh sai thông tin.</p>
-    
-    <button class="btn-confirm" onclick="showReceipt()" style="background: #2563eb; color: #fff; padding: 15px; border-radius: 8px; font-weight: bold; border: none; cursor: pointer; width: 100%; font-size: 18px; margin-top: 10px;">
-        ✅ ĐÃ THANH TOÁN
-    </button>
-</div>
-
-<div id="receipt-section" style="display: none; background: #f1f5f9; color: #000; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 5px solid #2563eb;">
-    <pre id="receipt-text" style="white-space: pre-wrap; background: #fff; padding: 10px; font-size: 13px; border: 1px solid #ccc; border-radius: 5px; text-align: left;">
-
-📄 XÁC NHẬN ĐĂNG KÝ THÀNH VIÊN
-HỆ THỐNG TƯ LIỆU GÓC KHUẤT THẾ GIỚI
-🆔 MÃ GIAO DỊCH: #hoivienkhophimhay
-📅 NGÀY: <span id="current-date"></span>
-Gói: Truy cập Kho phim tư liệu (Vĩnh viễn)
-Trạng thái: ĐÃ THANH TOÁN (10.000đ)
-──────────────────────────
-[Hệ thống xác nhận từ Tiến ]</pre>
-        <button class="btn-confirm" onclick="copyAndZalo()" style="background: #0068ff;">VUI LÒNG COPPY THÔNG TIN VÀ GỬI QUA ZALO ADMIN ĐỂ LẤY MẬT KHẨU NHÉ</button>
+    <div style="text-align: center; margin-top: 50px; opacity: 0.2;">
+        <button onclick="localStorage.removeItem('unlocked_tien'); location.reload();" style="background:none; color:#fff; border:1px solid #fff; font-size: 10px;">RESET WEB</button>
     </div>
 </div>
 
 <script>
-    const CORRECT_PASS = "14102010"; // Mật khẩu của Tiến
+    const CORRECT_PASS = "14102010";
 
-    // Tự động kiểm tra nếu đã nhập pass trước đó
+    // Hàm chuyển đổi danh mục
+    function filterCategory(cat) {
+        // Đổi màu nút
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        // Ẩn hiện video
+        document.querySelectorAll('.video-item').forEach(item => {
+            if(item.classList.contains(cat)) {
+                item.classList.add('show');
+            } else {
+                item.classList.remove('show');
+            }
+        });
+    }
+
+    function checkPass(btn) {
+        const input = btn.parentElement.querySelector('.pass-input');
+        if(input.value === CORRECT_PASS) {
+            localStorage.setItem("unlocked_tien", "true");
+            location.reload(); 
+        } else {
+            alert("Sai mật khẩu!");
+        }
+    }
+
     window.onload = function() {
         if(localStorage.getItem("unlocked_tien") === "true") {
-            unlockContent();
+            document.querySelectorAll('.video-item').forEach(item => item.classList.add('unlocked'));
         }
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('vi-VN');
     };
 
-    function checkPass() {
-        const inputs = document.querySelectorAll('.pass-input');
-        let isRight = false;
-        inputs.forEach(input => { if(input.value === CORRECT_PASS) isRight = true; });
-
-        if(isRight) {
-            localStorage.setItem("unlocked_tien", "true");
-            unlockContent();
-            alert("Mật khẩu đúng! Chúc bạn xem phim vui vẻ.");
-        } else {
-            alert("Mật khẩu sai! Vui lòng thanh toán 10.000đ để nhận pass từ Admin.");
-        }
-    }
-
-    function unlockContent() {
-        document.querySelectorAll('.video-item').forEach(item => {
-            item.classList.add('unlocked');
-            const ifr = item.querySelector('iframe');
-            if(ifr) ifr.src = ifr.src; 
-        });
-    }
-
     function scrollToPay() { document.getElementById('payment-area').scrollIntoView({ behavior: 'smooth' }); }
-    
-    function showReceipt() { 
-        document.getElementById('receipt-section').style.display = 'block'; 
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-
     function copyAndZalo() {
-        const text = document.getElementById('receipt-text').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Đã copy hóa đơn! Đang chuyển sang Zalo Admin Nhật Tiến...");
-            window.location.href = "https://zalo.me/0966181924"; 
-        });
-    }
-</script>
-<div style="text-align: center; margin-top: 50px; opacity: 0.3;">
-    <button onclick="resetWeb()" style="background: none; border: 1px solid #555; color: #555; padding: 5px 10px; cursor: pointer; font-size: 12px;">
-        Khóa lại web (Để quay video)
-    </button>
-</div>
-
-<script>
-    function resetWeb() {
-        localStorage.removeItem("unlocked_tien"); // Xóa bộ nhớ đã mở khóa
-        location.reload(); // Load lại trang
+        alert("Đang chuyển sang Zalo Admin 0966181924");
+        window.location.href = "https://zalo.me/0966181924";
     }
 </script>
 </body>
